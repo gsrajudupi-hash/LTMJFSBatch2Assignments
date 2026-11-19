@@ -1,0 +1,186 @@
+Table Customer {
+  customer_id int [pk, increment]
+  first_name varchar(50) [not null]
+  last_name varchar(50)
+  email varchar(100) [not null, unique]
+  mobile_number varchar(15) [not null, unique]
+  password varchar(255) [not null]
+}
+
+Table Customer_Address {
+  address_id int [pk, increment]
+  customer_id int [not null, ref: > Customer.customer_id]
+  address_line1 varchar(150) [not null]
+  address_line2 varchar(150)
+  city varchar(50) [not null]
+  state varchar(50) [not null]
+  pincode varchar(10) [not null]
+}
+
+Table Restaurant {
+  restaurant_id int [pk, increment]
+  name varchar(100) [not null]
+  contact varchar(15) [not null]
+  email varchar(100) [unique]
+  start_time time [not null]
+  end_time time [not null]
+  restaurant_active varchar(10) [not null]
+  rating decimal(2,1)
+}
+
+Table Food_Category {
+  category_id int [pk, increment]
+  category_name varchar(50) [not null, unique]
+}
+
+Table Food_Item {
+  food_item_id int [pk, increment]
+  restaurant_id int [not null, ref: > Restaurant.restaurant_id]
+  category_id int [not null, ref: > Food_Category.category_id]
+  food_name varchar(100) [not null]
+  food_description varchar(255)
+  food_price decimal(10,2) [not null]
+  type varchar(10) [not null]
+  availability boolean [not null, default: true]
+}
+
+Table Cart {
+  cart_id int [pk, increment]
+  customer_id int [not null, ref: > Customer.customer_id]
+  amount decimal(10,2) [not null, default: 0]
+  active boolean [not null, default: true]
+}
+
+Table Cart_Item {
+  cart_item_id int [pk, increment]
+  cart_id int [not null, ref: > Cart.cart_id]
+  food_item_id int [not null, ref: > Food_Item.food_item_id]
+  quantity int [not null]
+
+  indexes {
+    (cart_id, food_item_id) [unique]
+  }
+}
+
+Table Orders {
+  order_id int [pk, increment]
+  customer_id int [not null, ref: > Customer.customer_id]
+  coupon_id int [not null,ref: > Coupon.coupon_id]
+  restaurant_id int [not null, ref: > Restaurant.restaurant_id]
+  address_id int [not null, ref: > Customer_Address.address_id]
+  order_time datetime [not null]
+  sub_total decimal(10,2) [not null]
+  delivery_charges decimal(10,2) [not null, default: 0]
+  discount_amount decimal(10,2) [not null, default: 0]
+  final_amount decimal(10,2) [not null]
+}
+
+Table Order_Item {
+  order_item_id int [pk, increment]
+  order_id int [not null, ref: > Orders.order_id]
+  food_item_id int [not null, ref: > Food_Item.food_item_id]
+  quantity int [not null]
+  item_price decimal(10,2) [not null]
+
+  indexes {
+    (order_id, food_item_id) [unique]
+  }
+}
+
+Table Payment {
+  payment_id int [pk, increment]
+  order_id int [not null, unique, ref: > Orders.order_id]
+  reference_id varchar(100) [not null, unique]
+  payment_amount decimal(10,2) [not null]
+  payment_date datetime [not null]
+  status varchar(20) [not null]
+  payment_type varchar(30) [not null]
+}
+
+Table Delivery_Partner {
+  delivery_partner_id int [pk, increment]
+  first_name varchar(50) [not null]
+  last_name varchar(50)
+  mobile_number varchar(15) [not null, unique]
+  availability boolean [not null, default: true]
+}
+
+Table Delivery {
+  delivery_id int [pk, increment]
+  order_id int [not null, unique, ref: > Orders.order_id]
+  delivery_partner_id int [not null, ref: > Delivery_Partner.delivery_partner_id]
+  assignment_status varchar(20) [not null]
+  pickup_time datetime
+  estimated_delivery_time datetime
+  delivery_time datetime
+  delivery_status varchar(30) [not null]
+}
+
+Table Feedback {
+  feedback_id int [pk, increment]
+  customer_id int [not null, ref: > Customer.customer_id]
+  order_id int [not null, ref: > Orders.order_id]
+  restaurant_id int [ref: > Restaurant.restaurant_id]
+  food_item_id int [ref: > Food_Item.food_item_id]
+  rating int [not null]
+  comments varchar(500)
+  feedback_date datetime [not null]
+}
+
+
+Table Coupon {
+  coupon_id int [pk, increment]
+  coupon_code varchar(50) [not null, unique]
+  discount_type varchar(20) [not null]
+  discount_value decimal(10,2) [not null]
+  minimum_order_amount decimal(10,2) [not null, default: 0]
+  valid_from datetime [not null]
+  valid_until datetime [not null]
+  is_active boolean [not null, default: true]
+}
+
+Table Coupon_Redemption {
+  redemption_id int [pk, increment]
+  coupon_id int [not null, ref: > Coupon.coupon_id]
+  customer_id int [not null, ref: > Customer.customer_id]
+  order_id int [not null, unique, ref: > Orders.order_id]
+  redeemed_at datetime [not null]
+  discount_amount decimal(10,2) [not null]
+}
+
+Table Refund {
+  refund_id int [pk, increment]
+  payment_id int [not null, ref: > Payment.payment_id]
+  order_id int [not null, ref: > Orders.order_id]
+  refund_amount decimal(10,2) [not null]
+  refund_date datetime [not null]
+  refund_status varchar(20) [not null]
+  refund_reference_id varchar(100) [unique]
+  refund_reason varchar(255)
+}
+
+Table Restaurant_Address {
+  restaurant_address_id int [pk, increment]
+  restaurant_id int [not null, ref: > Restaurant.restaurant_id]
+  address_line1 varchar(150) [not null]
+  address_line2 varchar(150)
+  city varchar(50) [not null]
+  state varchar(50) [not null]
+  pincode varchar(10) [not null]
+}
+
+Table Vehicle_Details {
+  vehicle_id int [pk, increment]
+  delivery_partner_id int [not null, ref: > Delivery_Partner.delivery_partner_id]
+  vehicle_type varchar(30) [not null]
+  vehicle_number varchar(20) [not null, unique]
+  vehicle_model varchar(50)
+  vehicle_status varchar(20) [not null]
+}
+
+Table Order_Status_History {
+  order_status_history_id int [pk, increment]
+  order_id int [not null, ref: > Orders.order_id]
+  status varchar(30) [not null]
+  status_updated_at datetime [not null]
+}
