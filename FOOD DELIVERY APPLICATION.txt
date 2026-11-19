@@ -1,0 +1,181 @@
+								FOOD DELIVERY APPLICATION
+
+Task 1 - Requirement Analysis
+
+.Identify all entities:
+.PK Identification:
+.Candidate keys and unique attributes:
+ 
+ Customer, Customer Address, Restaurant, Food Category, Menu Item, Cart, Cart Item, Order, Order Item, Payment, Delivery Partner, Delivery, Delivery, Order Status History, Review, Coupon, Coupon Redemption, Refund, Restaurant Operating Hours, Restaurant Order.
+
+.Attribute Identification:
+
+1. CUSTOMER 
+    .customer_id(PK, AI)
+    .name(NN)
+    .email(NN,UK)
+    .mobile(NN, UK)
+    .password(NN)
+    .created_at
+    .updated_at
+
+2. CUSTOMER ADDRESS
+    .address_id(PK, AI)
+    .customer_id(FK, NN)
+    .address_line(NN)
+    .city(NN)
+    .state(NN)
+    .pincode(NN)
+    .address_type
+    .is_default
+
+3. RESTAURANT
+    .restaurant_id(PK, AI)
+    .restaurant_name(NN)
+    .address(NN)
+    .city(NN)
+    .state(NN)
+    .pincode(NN)
+    .phone(NN)
+    .email(NN)
+    .is_active
+    .created_at
+
+4. FOOD CATEGORY
+    .category_id(PK,AI)
+    .category_name(NN,UK)
+    .description
+
+5. MENU ITEM
+    .item_id(PK, AI)
+    .restaurant_id(FK, NN)
+    .category_id(FK, NN)
+    .item_name(NN)
+    .description
+    .price
+    .is_veg(NN)
+    .is_available
+
+6. CART
+    .cart_id(PK)
+    .customer_id(FK,NN,UK)
+    .created_at
+    .updated_at
+
+7. CART ITEM
+    .cart_item_id(PK, AI)
+    .cart_id(FK, NN)
+    .item_id(FK, NN)
+    .quantity(NN)
+    .added_at
+
+8. ORDER
+    .order_id(PK,AI)
+    .customer_id(FK,NN)
+    .address_id(FK,NN)
+    .order_date
+    .subtotal
+    .delivery_charge(NN)
+    .discount  
+    .total_amount(NN)
+    .order_status(NN)
+
+9. ORDER ITEM
+    .order_item_id(PK)
+    .restaurant_ordrer_id(FK,NN)
+    .item_id(FK,NN)
+    .quantity
+    .item_price(NN)
+
+10. PAYMENT
+     .payment_id(PK,AI)
+     .order_id(FK,NN)
+     .payment_method(NN)
+     .amount(NN)
+     .transaction_ref(UK)
+     .payment_date
+     .payment_status(NN)
+
+11. DELIVERY PARTNER
+     .partner_id(PK,AI)
+     .name(NN)
+     .mobile(NN,UK)
+     .vehicle_number
+     .vehicle_type
+     .availabilitu_status
+
+12. DELIVERY
+     .delivery_id(PK,AI)
+     .restaurant_order_id(FK,NN)
+     .partner_id(FK,NN)
+     .pickup_time
+     .delivered_time
+     .estimated_delivery_time
+     .delivery_status(NN)
+
+13. ORDER STATUS HISTORY
+      .history_id(PK,AI)
+      .order_id(FK,NN)
+      .status(NN)
+      .updated_at
+      .remarks
+
+14. REVIEW
+     .review_id(PK,AI)
+     .customer_id(FK,NN)
+     .restaurant_id(FK,NN)
+     .item_id(FK, nullable)
+     .order_id(FK,NN)
+     .rating
+     .comment
+     .created_at
+
+15. COUPON
+     .coupon_id(PK,AI)
+     .coupon_code(NN,UK)
+     .discount_type(NN)
+     .discount_value(NN)
+     .min_order_value
+     .max_discount
+     .start_date(NN)
+     .expiry_date(NN)
+     .usage_limit
+
+16. COUPON REDEMPTION
+     .redemption_id(PK,AI)
+     .coupon_id(FK,NN)
+     .cusotmer_id(FK,NN)
+     .order_id(FK,NN)
+     .redeemed_at
+     .discount_amount(NN)
+
+17. REFUND
+     .refund_id(PK,AI)
+     .payment_id(FK,NN)
+     .amount(NN)
+     .reason(NN)
+     .refund_satus(NN)
+     .refund_date
+
+18. RESTAURANT OPERATING HOURS
+     .operating_hours_id(PK,AI )
+     .restaurant_id(FK,NN)
+     .day_of_week(NN)
+     .open_time(NN)
+     .close_time(NN)
+     .is_closed
+
+19. RESTAURANT ORDER
+     .restaurant_order_id(PK,AI)
+     .order_id(FK,NN)
+     .restaurant_id(FK,NN)
+     .subtotal(NN)
+     .delivery_charge
+     .discount
+     .total_amount(NN)
+     .order_status(NN)
+     .created_at 
+  
+      
+
+               
