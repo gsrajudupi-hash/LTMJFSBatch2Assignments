@@ -1,0 +1,35 @@
+===========Additional Database Design Challenges=======================
+
+1)	Can one order contain food from multiple restaurants? How would you redesign the schema?
+A)	The current design supports one restaurant per order. To support food items from multiple restaurants in one order, we can create a restaurant_order table between orders and restaurant. Each restaurant can then process its part of the order separately.
+
+2)	How will you maintain multiple payment attempts for a single order?
+A)	For multiple payment attempts on the same order, allow multiple payment records for one order_id. Each payment record can store its own reference_id, payment status, payment type, amount, and timestamp.
+	Design change: remove the UNIQUE constraint from payment.order_id.
+	Order -> Payement = 1:M
+	
+3)  How will you preserve historical food prices?
+A)	Store the food price at the time of ordering in order_item.item_price. Even if food_item.food_price changes later, old orders will still retain the original price paid by the customer.
+
+4)	How will you maintain cancellation reasons and refund details?
+A)	Store the cancellation status and timestamp in order_status_history. Store refund details such as refund amount, status, reason, date, and reference ID in the refund table linked to the corresponding payment.
+This preserves both the order cancellation history and refund transaction details.
+
+5)	How will you maintain the complete delivery status history?
+A)	Use order_status_history to store each delivery/order status change as a separate row, along with status_updated_at.
+
+6)	How will you restrict customers from using the same coupon beyond the allowed limit?
+A)	Use the coupon_redemption table to track how many times each customer has used a coupon. Before applying a coupon, check the customer's redemption count against the allowed usage limit, and reject the coupon when the limit is reached.
+
+7)	How will you prevent orders when restaurants are closed?
+A)	Before placing an order, check the restaurant's restaurant_active, start_time, and end_time. The application should allow the order only when the restaurant is ACTIVE and the current time is within its operating hours.
+
+8)	How will you handle food items that become unavailable after being added to a cart?
+A)	Before checkout, recheck the food_item.availability status for every item in the cart. If an item becomes unavailable, prevent that item from being ordered and notify the customer to remove or replace it.
+
+9)	How will you ensure consistent order placement when multiple customers order simultaneously?
+A)	Use database transactions to ensure all order-related operations are completed consistently. Creating the order, adding order_item records, validating availability, and processing related updates should succeed together or be rolled back if any step fails.
+
+10)	 What happens to historical orders when a customer requests account deletion?
+A)	 Historical orders should not be deleted, because they are required for transaction, payment, refund, and reporting history. Instead, use soft deletion/anonymization by marking the customer account as deleted/inactive and removing or masking personal information while retaining the historical order records.
+
