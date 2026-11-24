@@ -11,10 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// Interface for toll calculation
-interface TollCalculator {
-    long calculateToll();
-}
+
 
 // Base class representing a vehicle
 abstract class Vehicle implements TollCalculator {
@@ -226,78 +223,11 @@ class TollBooth {
 
         System.out.println("Totals have been reset.");
     }
-}
 
-// Main application
-public class TollBoothApplication {
 
-    private static final Scanner scanner =
-            new Scanner(System.in);
 
-    public static void main(String[] args) {
 
-        TollBooth tollBooth = new TollBooth();
-
-        boolean running = true;
-
-        while (running) {
-
-            displayMenu();
-
-            int choice = readInt("Enter your choice: ");
-
-            try {
-
-                switch (choice) {
-
-                    case 1:
-                        addTruck(tollBooth);
-                        break;
-
-                    case 2:
-                        tollBooth.displayTotals();
-                        break;
-
-                    case 3:
-                        tollBooth.displayTruckHistory();
-                        break;
-
-                    case 4:
-                        tollBooth.collectReceipts();
-                        break;
-
-                    case 5:
-                        running = false;
-                        System.out.println(
-                                "Thank you for using Toll Booth System.");
-                        break;
-
-                    default:
-                        System.out.println(
-                                "Invalid choice. Please select 1 to 5.");
-                }
-
-            } catch (IllegalArgumentException e) {
-
-                System.out.println("Validation Error: "
-                        + e.getMessage());
-
-            } catch (ArithmeticException e) {
-
-                System.out.println(
-                        "Calculation Error: Numeric value is too large.");
-
-            } catch (Exception e) {
-
-                System.out.println(
-                        "Unexpected Error: " + e.getMessage());
-            }
-        }
-
-        scanner.close();
-    }
-
-    private static void displayMenu() {
+    static void displayMenu() {
 
         System.out.println();
         System.out.println("========================================");
@@ -313,8 +243,9 @@ public class TollBoothApplication {
         System.out.println("========================================");
     }
 
-    private static void addTruck(TollBooth tollBooth) {
-
+    public static void addTruck(TollBooth tollBooth) {
+    	Scanner scanner =
+  	            new Scanner(System.in);
         System.out.print("Enter Truck ID: ");
         String vehicleId = scanner.nextLine();
 
@@ -332,7 +263,8 @@ public class TollBoothApplication {
     }
 
     private static int readInt(String message) {
-
+ Scanner scanner =
+  	            new Scanner(System.in);
         while (true) {
 
             System.out.print(message);
@@ -351,7 +283,8 @@ public class TollBoothApplication {
     }
 
     private static long readLong(String message) {
-
+     Scanner scanner =
+  	            new Scanner(System.in);
         while (true) {
 
             System.out.print(message);
